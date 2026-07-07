@@ -21,6 +21,7 @@ export class UserRepositoryImpl implements IUserRepository {
       name: user.name,
       email: user.email,
       password: user.password,
+      isVerified: user.isVerified,
     });
 
     return this.toDomain(createdUser);
@@ -64,12 +65,38 @@ export class UserRepositoryImpl implements IUserRepository {
     await this.userModel.findByIdAndDelete(id);
   }
 
+  async verifyEmail(email: string): Promise<void> {
+    await this.userModel.updateOne(
+      { email },
+      {
+        $set: {
+          isVerified: true,
+        },
+      },
+    );
+  }
+
+  async updatePassword(
+    email: string,
+    password: string,
+  ): Promise<void> {
+    await this.userModel.updateOne(
+      { email },
+      {
+        $set: {
+          password,
+        },
+      },
+    );
+  }
+
   private toDomain(user: UserDocument): User {
     return new User(
       user._id.toString(),
       user.name,
       user.email,
       user.password,
+      user.isVerified,
       user.createdAt,
       user.updatedAt,
     );

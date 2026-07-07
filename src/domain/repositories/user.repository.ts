@@ -10,4 +10,11 @@ export interface IUserRepository {
   update(user: User): Promise<User>;
 
   delete(id: string): Promise<void>;
+
+  verifyEmail(email: string): Promise<void>;
+
+  updatePassword(
+    email: string,
+    password: string,
+  ): Promise<void>;
 }

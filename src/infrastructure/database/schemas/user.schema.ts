@@ -25,6 +25,12 @@ export class UserSchema {
   @Prop({
     required: true,
   })
+
+  @Prop({
+    default: false,
+  })
+  isVerified: boolean;
+  
   password: string;
 
   createdAt: Date;

@@ -12,7 +12,7 @@ export class RegisterRequestDto {
 }
 
 export class RegisterResponseDto {
-  id: string | null;
-  name: string;
+  message: string;
   email: string;
+  verificationRequired: boolean;
 }

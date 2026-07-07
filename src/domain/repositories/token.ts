@@ -1,3 +1,7 @@
 export const USER_REPOSITORY = Symbol('USER_REPOSITORY');
 
 export const URL_REPOSITORY = Symbol('URL_REPOSITORY');
+
+export const OTP_REPOSITORY = Symbol('OTP_REPOSITORY');
+export const REFRESH_TOKEN_REPOSITORY =
+  Symbol('REFRESH_TOKEN_REPOSITORY');
