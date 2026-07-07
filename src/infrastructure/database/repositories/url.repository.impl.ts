@@ -45,6 +45,24 @@ export class UrlRepositoryImpl implements IUrlRepository {
     );
   }
 
+  async findByUserId(userId: string): Promise<Url[]> {
+    const urls = await this.urlModel.find({ userId });
+  
+    return urls.map((url) => this.toDomain(url));
+  }
+
+
+
+  async findById(id: string): Promise<Url | null> {
+    const url = await this.urlModel.findById(id);
+  
+    if (!url) {
+      return null;
+    }
+  
+    return this.toDomain(url);
+  }
+  
   async delete(id: string): Promise<void> {
     await this.urlModel.findByIdAndDelete(id);
   }

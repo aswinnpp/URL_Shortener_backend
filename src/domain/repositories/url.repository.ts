@@ -9,5 +9,10 @@ export interface IUrlRepository {
 
   delete(id: string): Promise<void>;
 
+  findByUserId(userId: string): Promise<Url[]>;
+  findById(id: string): Promise<Url | null>;
+
+   delete(id: string): Promise<void>;
+
   incrementClicks(shortCode: string): Promise<void>;
 }
