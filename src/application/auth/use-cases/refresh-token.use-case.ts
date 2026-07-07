@@ -2,12 +2,15 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  UnauthorizedException,
 } from '@nestjs/common';
 
 import type { IRefreshTokenRepository } from '../../../domain/repositories/refresh-token.repository';
+import type { IUserRepository } from '../../../domain/repositories/user.repository';
 
 import {
   REFRESH_TOKEN_REPOSITORY,
+  USER_REPOSITORY,
 } from '../../../domain/repositories/token';
 
 import {
@@ -34,6 +37,9 @@ export class RefreshTokenUseCase {
     @Inject(REFRESH_TOKEN_REPOSITORY)
     private readonly refreshRepository: IRefreshTokenRepository,
 
+    @Inject(USER_REPOSITORY)
+    private readonly userRepository: IUserRepository,
+
     @Inject(TOKEN_HASHER)
     private readonly tokenHasher: ITokenHasher,
 
@@ -43,15 +49,33 @@ export class RefreshTokenUseCase {
     private readonly generateRefreshTokenUseCase: GenerateRefreshTokenUseCase,
   ) {}
 
-  async execute(refreshToken: string) {
-    const hash = await this.tokenHasher.hash(refreshToken);
+  async execute(refreshToken?: string) {
+    if (!refreshToken) {
+      throw new UnauthorizedException(
+        'Refresh token is missing.',
+      );
+    }
+
+    const hash =
+      await this.tokenHasher.hash(refreshToken);
 
     const stored =
       await this.refreshRepository.findByHash(hash);
 
     if (!stored) {
       throw new BadRequestException(
-        'Invalid refresh token',
+        'Invalid refresh token.',
+      );
+    }
+
+    const user =
+      await this.userRepository.findById(
+        stored.userId,
+      );
+
+    if (!user) {
+      throw new UnauthorizedException(
+        'User not found.',
       );
     }
 
@@ -59,12 +83,13 @@ export class RefreshTokenUseCase {
 
     const newRefreshToken =
       await this.generateRefreshTokenUseCase.execute(
-        stored.userId,
+        user.id!,
       );
 
     const accessToken =
       await this.tokenProvider.generateAccessToken({
-        sub: stored.userId,
+        sub: user.id,
+        email: user.email,
       });
 
     return {

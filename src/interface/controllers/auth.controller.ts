@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post,Req,Res, } from '@nestjs/common';
 
 import { RegisterRequestDto, RegisterResponseDto } from '../../application/auth/dto/register.dto';
 import { LoginRequestDto } from '../../application/auth/dto/login.dto';
@@ -10,8 +10,19 @@ import { ResendOtpDto } from '../../application/auth/dto/resend-otp.dto';
 import { ResendOtpUseCase } from '../../application/auth/use-cases/resend-otp.use-case';
 import { ForgotPasswordDto } from '../../application/auth/dto/forgot-password.dto';
 import { ForgotPasswordUseCase } from '../../application/auth/use-cases/forgot-password.use-case';
-import { RefreshTokenDto } from '../../application/auth/dto/refresh-token.dto';
-import { LogoutDto } from '../../application/auth/dto/logout.dto';
+
+import type {
+  Request,
+  Response,
+} from 'express';
+
+
+import {
+  REFRESH_TOKEN_COOKIE,
+} from '../../infrastructure/auth/cookie.constants';
+
+import { CookieService } from '../../infrastructure/auth/cookie.service';
+
 
 import { RefreshTokenUseCase } from '../../application/auth/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from '../../application/auth/use-cases/logout.use-case';
@@ -26,6 +37,7 @@ export class AuthController {
     private readonly forgotPasswordUseCase: ForgotPasswordUseCase,
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
+    private readonly cookieService: CookieService,
   ) { }
 
   @Post('register')
@@ -34,9 +46,30 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() dto: LoginRequestDto) {
-    return this.loginUseCase.execute(dto);
+  async login(
+    @Body() dto: LoginRequestDto,
+  
+    @Res({ passthrough: true })
+    res: Response,
+  ) {
+    const result =
+      await this.loginUseCase.execute(dto);
+  
+    this.cookieService.setAccessToken(
+      res,
+      result.accessToken,
+    );
+  
+    this.cookieService.setRefreshToken(
+      res,
+      result.refreshToken,
+    );
+  
+    return {
+      user: result.user,
+    };
   }
+
 
   @Post('verify-email')
   async verifyEmail(
@@ -74,25 +107,61 @@ export class AuthController {
 
 
   @Post('refresh-token')
-  async refreshToken(
-    @Body() dto: RefreshTokenDto,
-  ) {
-    return this.refreshTokenUseCase.execute(
-      dto.refreshToken,
-    );
-  }
+async refreshToken(
+  @Req() req: Request,
 
-  @Post('logout')
-  async logout(
-    @Body() dto: LogoutDto,
-  ) {
-    await this.logoutUseCase.execute(
-      dto.refreshToken,
+  @Res({ passthrough: true })
+  res: Response,
+) {
+  const refreshToken =
+    req.cookies[
+      REFRESH_TOKEN_COOKIE
+    ];
+
+  const result =
+    await this.refreshTokenUseCase.execute(
+      refreshToken,
     );
 
-    return {
-      message: 'Logged out successfully.',
-    };
-  }
+  this.cookieService.setAccessToken(
+    res,
+    result.accessToken,
+  );
+
+  this.cookieService.setRefreshToken(
+    res,
+    result.refreshToken,
+  );
+
+  return {
+    success: true,
+  };
+}
+
+@Post('logout')
+async logout(
+  @Req() req: Request,
+
+  @Res({ passthrough: true })
+  res: Response,
+) {
+  const refreshToken =
+    req.cookies[
+      REFRESH_TOKEN_COOKIE
+    ];
+
+  await this.logoutUseCase.execute(
+    refreshToken,
+  );
+
+  this.cookieService.clearAuthCookies(
+    res,
+  );
+
+  return {
+    message:
+      'Logged out successfully.',
+  };
+}
 
 }

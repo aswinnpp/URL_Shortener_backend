@@ -1,21 +1,22 @@
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import {
+  IsEmail,
+  MinLength,
+} from 'class-validator';
 
 export class LoginRequestDto {
   @IsEmail()
   email: string;
 
-  @IsNotEmpty()
+  @MinLength(6)
   password: string;
 }
 
 export class LoginResponseDto {
-  accessToken: string;
-
-  refreshToken: string;
-
   user: {
     id: string;
+
     name: string;
+
     email: string;
   };
 }

@@ -1,6 +1,7 @@
 import {
     Inject,
     Injectable,
+    UnauthorizedException,
   } from '@nestjs/common';
   
   import {
@@ -28,12 +29,22 @@ import {
     ) {}
   
     async execute(
-      refreshToken: string,
+      refreshToken?: string,
     ): Promise<void> {
   
-      const hash =
-        await this.tokenHasher.hash(refreshToken);
+      if (!refreshToken) {
+        throw new UnauthorizedException(
+          'Refresh token is missing.',
+        );
+      }
   
-      await this.refreshRepository.delete(hash);
+      const hash =
+        await this.tokenHasher.hash(
+          refreshToken,
+        );
+  
+      await this.refreshRepository.delete(
+        hash,
+      );
     }
   }
