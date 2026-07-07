@@ -7,6 +7,7 @@ import { TOKEN_HASHER } from '../../application/auth/interfaces/token-hasher.int
 import { BcryptService } from './bcrypt.service';
 import { JwtTokenService } from './jwt.service';
 import { JwtStrategy } from './jwt.strategy';
+import { CookieService } from './cookie.service';
 
 @Module({
   imports: [
@@ -41,14 +42,20 @@ import { JwtStrategy } from './jwt.strategy';
       provide: TOKEN_HASHER,
       useClass: TokenHasherService,
     },
+  
     JwtStrategy,
+  
+    CookieService,
   ],
 
   exports: [
     'PASSWORD_HASHER',
     'TOKEN_PROVIDER',
-     TOKEN_HASHER,
+    TOKEN_HASHER,
+  
     JwtModule,
+  
+    CookieService,
   ],
 })
 export class AuthInfrastructureModule {}

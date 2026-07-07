@@ -4,8 +4,7 @@ import { Otp } from '../../../domain/entities/otp.entity';
 import type { IOtpRepository } from '../../../domain/repositories/otp.repository';
 import { OTP_REPOSITORY } from '../../../domain/repositories/token';
 import type{ IEmailService } from '../interfaces/email.service.interface';
-import { EMAIL_SERVICE } from '../interfaces/email.service.interface';
-
+import { EMAIL_SERVICE } from '../../../infrastructure/email/email.constants';
 @Injectable()
 export class GenerateEmailOtpUseCase {
   constructor(

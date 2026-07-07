@@ -14,10 +14,13 @@ import { GenerateRefreshTokenUseCase } from './use-cases/generate-refresh-token.
 import { RotateRefreshTokenUseCase } from './use-cases/rotate-refresh-token.use-case';
 import { LogoutUseCase } from './use-cases/logout.use-case';
 import { RefreshTokenUseCase } from './use-cases/refresh-token.use-case';
+import { EmailModule } from '../../infrastructure/email/email.module';
+
 @Module({
   imports: [    
     DatabaseModule,
     AuthInfrastructureModule,
+    EmailModule,
   ],
 
   controllers: [

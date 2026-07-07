@@ -25,17 +25,17 @@ export class UserSchema {
   @Prop({
     required: true,
   })
+  password: string;
 
   @Prop({
     default: false,
   })
   isVerified: boolean;
-  
-  password: string;
 
   createdAt: Date;
 
   updatedAt: Date;
 }
 
-export const UserSchemaFactory = SchemaFactory.createForClass(UserSchema);
+export const UserSchemaFactory =
+  SchemaFactory.createForClass(UserSchema);
