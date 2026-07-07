@@ -26,7 +26,9 @@ export class CookieService {
           this.configService.get<string>('NODE_ENV') ===
           'production',
 
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production'
+        ? 'strict'
+        : 'lax',
 
         maxAge: Number(
           this.configService.getOrThrow(
@@ -50,7 +52,9 @@ export class CookieService {
           this.configService.get<string>('NODE_ENV') ===
           'production',
 
-        sameSite: 'lax',
+        sameSite: process.env.NODE_ENV === 'production'
+        ? 'strict'
+        : 'lax',
 
         maxAge: Number(
           this.configService.getOrThrow(
