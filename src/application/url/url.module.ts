@@ -8,6 +8,7 @@ import { CreateShortUrlUseCase } from './use-cases/create-short-url.use-case';
 import { RedirectUrlUseCase } from './use-cases/redirect-url.use-case';
 import { GetMyUrlsUseCase } from './use-cases/get-my-urls.use-case';
 import { GetUrlAnalyticsUseCase } from './use-cases/get-url-analytics.use-case';
+import { UpdateUrlUseCase } from './use-cases/update-url.use-case';
 
 
 @Module({
@@ -21,6 +22,7 @@ import { GetUrlAnalyticsUseCase } from './use-cases/get-url-analytics.use-case';
     GetMyUrlsUseCase,
     DeleteUrlUseCase,
     GetUrlAnalyticsUseCase,
+    UpdateUrlUseCase,
   ],
 
   exports: [
@@ -29,6 +31,7 @@ import { GetUrlAnalyticsUseCase } from './use-cases/get-url-analytics.use-case';
     GetMyUrlsUseCase,
     DeleteUrlUseCase,
     GetUrlAnalyticsUseCase,
+    UpdateUrlUseCase,
   ],
 })
 export class UrlModule {}

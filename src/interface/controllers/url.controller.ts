@@ -1,25 +1,29 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
   Post,
+  Res,
   UseGuards,
+  Query
 } from '@nestjs/common';
 
-import { Get, Param, Res } from '@nestjs/common';
 import type { Response } from 'express';
 
 import { GetMyUrlsUseCase } from '../../application/url/use-cases/get-my-urls.use-case';
-
+import { UpdateUrlDto } from '../../application/url/dto/update-url.dto';
 import { RedirectUrlUseCase } from '../../application/url/use-cases/redirect-url.use-case';
-
+import { UpdateUrlUseCase } from '../../application/url/use-cases/update-url.use-case';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { GetUrlAnalyticsUseCase } from '../../application/url/use-cases/get-url-analytics.use-case';
 import { CreateUrlDto } from '../../application/url/dto/create-url.dto';
 import { CreateShortUrlUseCase } from '../../application/url/use-cases/create-short-url.use-case';
-import { Delete } from '@nestjs/common';
 import { DeleteUrlUseCase } from '../../application/url/use-cases/delete-url.use-case';
-
+import { GetMyUrlsDto } from '../../application/url/dto/get-my-urls.dto';
 @Controller('url')
 export class UrlController {
   constructor(
@@ -28,6 +32,7 @@ export class UrlController {
     private readonly getMyUrlsUseCase: GetMyUrlsUseCase,
     private readonly getUrlAnalyticsUseCase: GetUrlAnalyticsUseCase,
     private readonly deleteUrlUseCase: DeleteUrlUseCase,
+    private readonly updateUrlUseCase: UpdateUrlUseCase,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -55,8 +60,12 @@ export class UrlController {
   @Get()
   async getMyUrls(
     @CurrentUser() user: any,
+    @Query() query: GetMyUrlsDto,
   ) {
-    return this.getMyUrlsUseCase.execute(user.sub);
+    return this.getMyUrlsUseCase.execute(
+      user.sub,
+      query,
+    );
   }
 
   @UseGuards(JwtAuthGuard)
@@ -84,6 +93,23 @@ async delete(
 
   return {
     message: 'URL deleted successfully.',
+  };
+}
+@UseGuards(JwtAuthGuard)
+@Patch(':id')
+async update(
+  @Param('id') id: string,
+  @Body() dto: UpdateUrlDto,
+  @CurrentUser() user: any,
+) {
+  await this.updateUrlUseCase.execute(
+    id,
+    dto,
+    user.sub,
+  );
+
+  return {
+    message: 'URL updated successfully.',
   };
 }
 }

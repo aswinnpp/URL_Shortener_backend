@@ -5,7 +5,7 @@ export class Url {
       public readonly shortCode: string,
       public readonly userId: string,
       public clicks: number = 0,
-      public readonly createdAt?: Date,
+      readonly createdAt: Date,
       public readonly updatedAt?: Date,
     ) {}
   }

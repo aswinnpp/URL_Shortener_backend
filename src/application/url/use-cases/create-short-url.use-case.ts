@@ -26,6 +26,7 @@ export class CreateShortUrlUseCase {
       shortCode,
       userId,
       0,
+      new Date(),
     );
 
     const savedUrl = await this.urlRepository.create(url);

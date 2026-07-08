@@ -32,10 +32,56 @@ export class UrlRepositoryImpl implements IUrlRepository {
     return this.toDomain(url);
   }
 
-  async findByUser(userId: string): Promise<Url[]> {
-    const urls = await this.urlModel.find({ userId });
-
-    return urls.map((url) => this.toDomain(url));
+  async findByUser(
+    userId: string,
+    page: number,
+    limit: number,
+    search?: string,
+    sortBy = 'createdAt',
+    order: 'asc' | 'desc' = 'desc',
+  ): Promise<{
+    urls: Url[];
+    total: number;
+  }> {
+    const filter: any = {
+      userId,
+    };
+  
+    if (search) {
+      filter.$or = [
+        {
+          originalUrl: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+        {
+          shortCode: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
+      ];
+    }
+  
+    const skip = (page - 1) * limit;
+  
+    const [urls, total] = await Promise.all([
+      this.urlModel
+        .find(filter)
+        .sort({
+          [sortBy]: order === 'asc' ? 1 : -1,
+        })
+        .skip(skip)
+        .limit(limit),
+  
+      this.urlModel.countDocuments(filter),
+    ]);
+  
+    return {
+      urls: urls.map((url) => this.toDomain(url)),
+      total,
+    };
   }
 
   async incrementClicks(shortCode: string): Promise<void> {
@@ -61,6 +107,24 @@ export class UrlRepositoryImpl implements IUrlRepository {
     }
   
     return this.toDomain(url);
+  }
+
+  async update(url: Url): Promise<Url> {
+    const updatedUrl = await this.urlModel.findByIdAndUpdate(
+      url.id,
+      {
+        originalUrl: url.originalUrl,
+      },
+      {
+        new: true,
+      },
+    );
+  
+    if (!updatedUrl) {
+      throw new Error('URL not found');
+    }
+  
+    return this.toDomain(updatedUrl);
   }
   
   async delete(id: string): Promise<void> {
