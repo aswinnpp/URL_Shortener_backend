@@ -36,7 +36,7 @@ export class CreateShortUrlUseCase {
       originalUrl: savedUrl.originalUrl,
       shortCode: savedUrl.shortCode,
       clicks: savedUrl.clicks,
-      shortUrl: `http://localhost:3000/api/url/${savedUrl.shortCode}`,
+      shortUrl: `${process.env.APP_URL}/api/url/${savedUrl.shortCode}`,
     };
   }
 
