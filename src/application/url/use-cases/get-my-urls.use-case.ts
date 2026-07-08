@@ -19,7 +19,7 @@ export class GetMyUrlsUseCase {
       id: url.id!,
       originalUrl: url.originalUrl,
       shortCode: url.shortCode,
-      shortUrl: `http://localhost:3000/api/${url.shortCode}`,
+      shortUrl: `http://localhost:3000/api/url/${url.shortCode}`,
       clicks: url.clicks,
       createdAt: url.createdAt!,
     }));

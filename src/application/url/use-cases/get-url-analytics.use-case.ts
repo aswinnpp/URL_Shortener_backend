@@ -37,7 +37,7 @@ import {
         id: url.id!,
         originalUrl: url.originalUrl,
         shortCode: url.shortCode,
-        shortUrl: `http://localhost:3000/api/${url.shortCode}`,
+        shortUrl: `http://localhost:3000/api/url/${url.shortCode}`,
         totalClicks: url.clicks,
         createdAt: url.createdAt!,
       };

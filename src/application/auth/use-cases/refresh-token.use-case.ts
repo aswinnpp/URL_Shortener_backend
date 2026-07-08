@@ -92,9 +92,14 @@ export class RefreshTokenUseCase {
         email: user.email,
       });
 
-    return {
-      accessToken,
-      refreshToken: newRefreshToken,
-    };
+      return {
+        accessToken,
+        refreshToken: newRefreshToken,
+        user: {
+          id: user.id!,
+          name: user.name,
+          email: user.email,
+        },
+      };
   }
 }
