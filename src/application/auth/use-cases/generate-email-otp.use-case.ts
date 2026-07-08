@@ -31,7 +31,7 @@ export class GenerateEmailOtpUseCase {
         email,
         otp,
         purpose,
-        new Date(Date.now() + 5 * 60 * 1000),
+        new Date(Date.now() + 1 * 60 * 1000),
         false,
       ),
     );
