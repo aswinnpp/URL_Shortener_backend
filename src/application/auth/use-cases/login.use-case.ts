@@ -32,9 +32,7 @@ export class LoginUseCase {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    console.log('DTO Password:', dto.password);
-    console.log('User:', user);
-    console.log('User Password:', user?.password);
+  
     const isMatch = await this.passwordHasher.compare(
       dto.password,
       user.password,

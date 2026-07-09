@@ -16,10 +16,14 @@ async function bootstrap() {
   app.use(compression());
   app.use(cookieParser());
 
-  app.enableCors({
-    origin: true,
-    credentials: true,
-  });
+ app.enableCors({
+  origin: [
+    'https://url-shortener-frontend-eight-mocha.vercel.app',
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+});
 
   app.setGlobalPrefix('api');
 

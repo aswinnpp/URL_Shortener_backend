@@ -17,68 +17,52 @@ export class CookieService {
     res: Response,
     token: string,
   ): void {
-    res.cookie(
-      ACCESS_TOKEN_COOKIE,
-      token,
-      {
-        httpOnly: true,
-        secure:
-          this.configService.get<string>('NODE_ENV') ===
-          'production',
-
-        sameSite: process.env.NODE_ENV === 'production'
-        ? 'strict'
-        : 'lax',
-
-        maxAge: Number(
-          this.configService.getOrThrow(
-            'ACCESS_TOKEN_COOKIE_MAX_AGE',
-          ),
-        ),
-      },
-    );
+    res.cookie(ACCESS_TOKEN_COOKIE, token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: Number(
+    this.configService.getOrThrow(
+      "ACCESS_TOKEN_COOKIE_MAX_AGE"
+    ),
+  ),
+});
   }
 
   setRefreshToken(
     res: Response,
     token: string,
   ): void {
-    res.cookie(
-      REFRESH_TOKEN_COOKIE,
-      token,
-      {
-        httpOnly: true,
-        secure:
-          this.configService.get<string>('NODE_ENV') ===
-          'production',
-
-        sameSite: process.env.NODE_ENV === 'production'
-        ? 'strict'
-        : 'lax',
-
-        maxAge: Number(
-          this.configService.getOrThrow(
-            'REFRESH_TOKEN_COOKIE_MAX_AGE',
-          ),
-        ),
-      },
-    );
+    res.cookie(REFRESH_TOKEN_COOKIE, token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: Number(
+    this.configService.getOrThrow(
+      "REFRESH_TOKEN_COOKIE_MAX_AGE"
+    ),
+  ),
+});
   }
 
   clearAccessToken(
     res: Response,
   ): void {
-    res.clearCookie(
-      ACCESS_TOKEN_COOKIE,
-    );
+   res.clearCookie(ACCESS_TOKEN_COOKIE, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
   }
 
   clearRefreshToken(
     res: Response,
   ): void {
-    res.clearCookie(
-      REFRESH_TOKEN_COOKIE,
-    );
+    res.clearCookie(REFRESH_TOKEN_COOKIE, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+});
   }
 
   clearAuthCookies(
