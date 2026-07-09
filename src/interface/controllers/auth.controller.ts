@@ -184,8 +184,26 @@ async resetPassword(
 @Post('google')
 async googleLogin(
   @Body() dto: GoogleLoginDto,
+
+  @Res({ passthrough: true })
+  res: Response,
 ) {
-  return this.googleLoginUseCase.execute(dto);
+  const result =
+    await this.googleLoginUseCase.execute(dto);
+
+  this.cookieService.setAccessToken(
+    res,
+    result.accessToken,
+  );
+
+  this.cookieService.setRefreshToken(
+    res,
+    result.refreshToken,
+  );
+
+  return {
+    user: result.user,
+  };
 }
 
 }
