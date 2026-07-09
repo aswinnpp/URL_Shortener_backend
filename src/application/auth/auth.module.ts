@@ -15,6 +15,8 @@ import { RotateRefreshTokenUseCase } from './use-cases/rotate-refresh-token.use-
 import { LogoutUseCase } from './use-cases/logout.use-case';
 import { RefreshTokenUseCase } from './use-cases/refresh-token.use-case';
 import { EmailModule } from '../../infrastructure/email/email.module';
+import { GoogleLoginUseCase } from './use-cases/google-login.use-case.ts';
+import { GenerateLoginResponseUseCase } from './use-cases/generate-login-response.use-case';
 
 @Module({
   imports: [    
@@ -39,6 +41,9 @@ import { EmailModule } from '../../infrastructure/email/email.module';
     RotateRefreshTokenUseCase,
     LogoutUseCase,
     RefreshTokenUseCase,
+    GenerateEmailOtpUseCase,
+    GoogleLoginUseCase,
+    GenerateLoginResponseUseCase,
   ],
 
   exports: [
@@ -53,6 +58,9 @@ import { EmailModule } from '../../infrastructure/email/email.module';
     RotateRefreshTokenUseCase,
     LogoutUseCase,
     RefreshTokenUseCase,
+    GenerateEmailOtpUseCase,
+    GoogleLoginUseCase,
+    GenerateLoginResponseUseCase,
   ],
 })
 export class AuthModule {}

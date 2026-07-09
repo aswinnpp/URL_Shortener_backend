@@ -54,10 +54,11 @@ export class RegisterUseCase {
         existingUser.email,
         hashedPassword,
         existingUser.isVerified,
+        existingUser.provider,
+        existingUser.googleId,
         existingUser.createdAt,
         existingUser.updatedAt,
       );
-
       savedUser =
         await this.userRepository.update(updatedUser);
     } else {

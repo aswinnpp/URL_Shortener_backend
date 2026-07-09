@@ -24,7 +24,8 @@ import {
 } from '../../infrastructure/auth/cookie.constants';
 
 import { CookieService } from '../../infrastructure/auth/cookie.service';
-
+import { GoogleLoginDto } from '../../application/auth/dto/GoogleLoginDto';
+import { GoogleLoginUseCase } from '../../application/auth/use-cases/google-login.use-case.ts';
 
 import { RefreshTokenUseCase } from '../../application/auth/use-cases/refresh-token.use-case';
 import { LogoutUseCase } from '../../application/auth/use-cases/logout.use-case';
@@ -41,6 +42,7 @@ export class AuthController {
     private readonly refreshTokenUseCase: RefreshTokenUseCase,
     private readonly logoutUseCase: LogoutUseCase,
     private readonly cookieService: CookieService,
+    private readonly googleLoginUseCase: GoogleLoginUseCase,
   ) {}
 
   @Post('register')
@@ -176,6 +178,14 @@ async resetPassword(
   return {
     message: 'Password reset successfully.',
   };
+}
+
+
+@Post('google')
+async googleLogin(
+  @Body() dto: GoogleLoginDto,
+) {
+  return this.googleLoginUseCase.execute(dto);
 }
 
 }

@@ -8,7 +8,8 @@ import { BcryptService } from './bcrypt.service';
 import { JwtTokenService } from './jwt.service';
 import { JwtStrategy } from './jwt.strategy';
 import { CookieService } from './cookie.service';
-
+import { GoogleAuthService } from './google-auth.service';
+import { GOOGLE_AUTH_SERVICE } from '../../application/auth/interfaces/google-auth.interface';
 @Module({
   imports: [
     ConfigModule,
@@ -42,6 +43,10 @@ import { CookieService } from './cookie.service';
       provide: TOKEN_HASHER,
       useClass: TokenHasherService,
     },
+    {
+      provide: GOOGLE_AUTH_SERVICE,
+      useClass: GoogleAuthService,
+    },
   
     JwtStrategy,
   
@@ -52,6 +57,7 @@ import { CookieService } from './cookie.service';
     'PASSWORD_HASHER',
     'TOKEN_PROVIDER',
     TOKEN_HASHER,
+    GOOGLE_AUTH_SERVICE,
   
     JwtModule,
   

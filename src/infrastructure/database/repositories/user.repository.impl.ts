@@ -14,14 +14,16 @@ export class UserRepositoryImpl implements IUserRepository {
   constructor(
     @InjectModel(UserSchema.name)
     private readonly userModel: Model<UserDocument>,
-  ) {}
+  ) { }
 
   async create(user: User): Promise<User> {
     const createdUser = await this.userModel.create({
       name: user.name,
       email: user.email,
-      password: user.password,
+      password: user.password ?? undefined,
       isVerified: user.isVerified,
+      provider: user.provider,
+      googleId: user.googleId ?? undefined,
     });
 
     return this.toDomain(createdUser);
@@ -50,6 +52,9 @@ export class UserRepositoryImpl implements IUserRepository {
         name: user.name,
         email: user.email,
         password: user.password,
+        isVerified: user.isVerified,
+        provider: user.provider,
+        googleId: user.googleId ?? undefined,
       },
       { new: true },
     );
@@ -95,8 +100,10 @@ export class UserRepositoryImpl implements IUserRepository {
       user._id.toString(),
       user.name,
       user.email,
-      user.password,
+      user.password ?? null,
       user.isVerified,
+      user.provider,
+      user.googleId ?? null,
       user.createdAt,
       user.updatedAt,
     );

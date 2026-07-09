@@ -6,10 +6,10 @@ import {
 
 import type { IUserRepository } from '../../../domain/repositories/user.repository';
 import { USER_REPOSITORY } from '../../../domain/repositories/token';
-import { GenerateRefreshTokenUseCase } from './generate-refresh-token.use-case';
+
 import { LoginRequestDto } from '../dto/login.dto';
 import type { IPasswordHasher } from '../interfaces/password-hasher.interface';
-import type { ITokenProvider } from '../interfaces/token-provider.interface';
+import { GenerateLoginResponseUseCase } from './generate-login-response.use-case';
 
 @Injectable()
 export class LoginUseCase {
@@ -17,14 +17,11 @@ export class LoginUseCase {
     @Inject(USER_REPOSITORY)
     private readonly userRepository: IUserRepository,
 
-    private readonly generateRefreshTokenUseCase: GenerateRefreshTokenUseCase,
     @Inject('PASSWORD_HASHER')
-
     private readonly passwordHasher: IPasswordHasher,
 
-    @Inject('TOKEN_PROVIDER')
-    private readonly tokenProvider: ITokenProvider,
-  ) { }
+    private readonly generateLoginResponseUseCase: GenerateLoginResponseUseCase,
+  ) {}
 
   async execute(dto: LoginRequestDto) {
     const user = await this.userRepository.findByEmail(dto.email);
@@ -32,7 +29,13 @@ export class LoginUseCase {
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-  
+
+    if (!user.password) {
+      throw new UnauthorizedException(
+        'This account uses Google Sign-In. Please continue with Google.',
+      );
+    }
+
     const isMatch = await this.passwordHasher.compare(
       dto.password,
       user.password,
@@ -48,27 +51,6 @@ export class LoginUseCase {
       );
     }
 
-
-    const accessToken =
-    await this.tokenProvider.generateAccessToken({
-      sub: user.id,
-      email: user.email,
-    });
-
-    const refreshToken =
-      await this.generateRefreshTokenUseCase.execute(
-        user.id!,
-      );
-
-    return {
-      accessToken,
-      refreshToken,
-      user: {
-        id: user.id!,
-        name: user.name,
-        email: user.email,
-      },
-    };
-
+    return this.generateLoginResponseUseCase.execute(user);
   }
 }
