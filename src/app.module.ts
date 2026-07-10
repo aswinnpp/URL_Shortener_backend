@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
-import { DatabaseModule } from './infrastructure/database/database.module';
-import { AuthModule } from './application/auth/auth.module';
-import { UrlModule } from './application/url/url.module';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { UrlModule } from './url/url.module';
 
 @Module({
   imports: [
