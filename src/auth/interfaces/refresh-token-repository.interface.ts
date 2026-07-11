@@ -1,4 +1,4 @@
-import { RefreshToken } from '../../entities/refresh-token.entity';
+import { RefreshToken } from '../entities/refresh-token.entity';
 
 export interface IRefreshTokenRepository {
   create(token: RefreshToken): Promise<RefreshToken>;

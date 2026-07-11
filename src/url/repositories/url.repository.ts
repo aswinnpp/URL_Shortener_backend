@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { Url } from '../../entities/url.entity';
+import { Url } from '../entities/url.entity';
 import { IUrlRepository } from '../interfaces/url-repository.interface';
 import { UrlSchema, UrlDocument } from '../schemas/url.schema';
 

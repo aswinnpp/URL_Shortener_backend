@@ -8,20 +8,14 @@ export type RefreshTokenDocument =
   timestamps: true,
 })
 export class RefreshTokenSchema {
-  @Prop({
-    required: true,
-  })
-  userId: string;
+  @Prop({ required: true })
+  userId!: string;
 
-  @Prop({
-    required: true,
-  })
-  tokenHash: string;
+  @Prop({ required: true })
+  tokenHash!: string;
 
-  @Prop({
-    required: true,
-  })
-  expiresAt: Date;
+  @Prop({ required: true })
+  expiresAt!: Date;
 
   createdAt?: Date;
 
@@ -29,15 +23,9 @@ export class RefreshTokenSchema {
 }
 
 export const RefreshTokenSchemaFactory =
-  SchemaFactory.createForClass(
-    RefreshTokenSchema,
-  );
+  SchemaFactory.createForClass(RefreshTokenSchema);
 
 RefreshTokenSchemaFactory.index(
-  {
-    expiresAt: 1,
-  },
-  {
-    expireAfterSeconds: 0,
-  },
+  { expiresAt: 1 },
+  { expireAfterSeconds: 0 },
 );

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { User } from '../../entities/user.entity';
+import { User } from '../entities/user.entity';
 import { GenerateRefreshTokenService } from './generate-refresh-token.service';
 import type { ITokenProvider } from '../interfaces/token-provider.interface';
 

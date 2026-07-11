@@ -4,7 +4,7 @@ import {
   ConflictException,
 } from '@nestjs/common';
 
-import { User } from '../../entities/user.entity';
+import { User } from '../entities/user.entity';
 
 import type { IUserRepository } from '../interfaces/user-repository.interface';
 import { USER_REPOSITORY } from '../constants/injection-tokens';

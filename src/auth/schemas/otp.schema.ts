@@ -8,39 +8,34 @@ export type OtpDocument = HydratedDocument<OtpSchema>;
 })
 export class OtpSchema {
   @Prop({ required: true })
-  email: string;
+  email!: string;
 
   @Prop({ required: true })
-  code: string;
+  code!: string;
 
   @Prop({
     required: true,
     enum: ['VERIFY_EMAIL', 'RESET_PASSWORD'],
   })
-  purpose: 'VERIFY_EMAIL' | 'RESET_PASSWORD';
+  purpose!: 'VERIFY_EMAIL' | 'RESET_PASSWORD';
 
   @Prop({ required: true })
-  expiresAt: Date;
+  expiresAt!: Date;
 
   @Prop({
     default: false,
   })
-  verified: boolean;
+  verified!: boolean;
 
   createdAt?: Date;
 
-updatedAt?: Date;
+  updatedAt?: Date;
 }
 
 export const OtpSchemaFactory =
   SchemaFactory.createForClass(OtpSchema);
 
-// MongoDB TTL Index
 OtpSchemaFactory.index(
-  {
-    expiresAt: 1,
-  },
-  {
-    expireAfterSeconds: 0,
-  },
+  { expiresAt: 1 },
+  { expireAfterSeconds: 0 },
 );

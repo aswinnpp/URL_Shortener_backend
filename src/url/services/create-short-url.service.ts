@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Url } from '../../entities/url.entity';
+import { Url } from '../entities/url.entity';
 import type { IUrlRepository } from '../interfaces/url-repository.interface';
 import { URL_REPOSITORY } from '../constants/injection-tokens';
 

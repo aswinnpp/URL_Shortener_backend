@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 
-import { Otp } from '../../entities/otp.entity';
+import { Otp } from '../entities/otp.entity';
 import type { IOtpRepository } from '../interfaces/otp-repository.interface';
 import { OTP_REPOSITORY } from '../constants/injection-tokens';
 import type { IEmailService } from '../interfaces/email.service.interface';

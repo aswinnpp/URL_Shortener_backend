@@ -1,4 +1,4 @@
-import { Url } from '../../entities/url.entity';
+import { Url } from '../entities/url.entity';
 export interface IUrlRepository {
   create(url: Url): Promise<Url>;
   findByShortCode(shortCode: string): Promise<Url | null>;

@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import {
   AuthProvider,
   User,
-} from '../../entities/user.entity';
+} from '../entities/user.entity';
 
 import {
   USER_REPOSITORY,

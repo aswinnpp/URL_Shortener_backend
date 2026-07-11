@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 import { Inject, Injectable } from '@nestjs/common';
 
-import { RefreshToken } from '../../entities/refresh-token.entity';
+import { RefreshToken } from '../entities/refresh-token.entity';
 
 import {
   REFRESH_TOKEN_REPOSITORY,

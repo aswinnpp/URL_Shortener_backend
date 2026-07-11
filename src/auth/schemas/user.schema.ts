@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
-import { AuthProvider } from '../../entities/user.entity';
+import { AuthProvider } from '../entities/user.entity';
 
 export type UserDocument = HydratedDocument<UserSchema>;
 
@@ -14,7 +14,7 @@ export class UserSchema {
     required: true,
     trim: true,
   })
-  name: string;
+  name!: string;
 
   @Prop({
     required: true,
@@ -22,7 +22,7 @@ export class UserSchema {
     lowercase: true,
     trim: true,
   })
-  email: string;
+  email!: string;
 
   @Prop({
     type: String,
@@ -34,14 +34,14 @@ export class UserSchema {
   @Prop({
     default: false,
   })
-  isVerified: boolean;
+  isVerified!: boolean;
 
   @Prop({
     type: String,
     enum: AuthProvider,
     default: AuthProvider.LOCAL,
   })
-  provider: AuthProvider;
+  provider!: AuthProvider;
 
   @Prop({
     type: String,
@@ -52,9 +52,9 @@ export class UserSchema {
   })
   googleId?: string;
 
-  createdAt: Date;
+  createdAt!: Date;
 
-  updatedAt: Date;
+  updatedAt!: Date;
 }
 
 export const UserSchemaFactory =

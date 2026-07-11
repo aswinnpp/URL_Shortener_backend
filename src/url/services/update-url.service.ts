@@ -6,7 +6,7 @@ import {
     NotFoundException,
   } from '@nestjs/common';
 
-  import { Url } from '../../entities/url.entity';
+  import { Url } from '../entities/url.entity';
 
   import type { IUrlRepository } from '../interfaces/url-repository.interface';
 
