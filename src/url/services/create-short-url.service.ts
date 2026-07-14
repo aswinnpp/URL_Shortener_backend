@@ -22,7 +22,7 @@ export class CreateShortUrlService {
   ): Promise<UrlResponseDto> {
     const shortCode = this.generateShortCode();
 
-  let user =  this.urlRepository.findByUserId(userId)
+  let user = await this.urlRepository.findByUserId(userId)
 
   console.log(user);
   
