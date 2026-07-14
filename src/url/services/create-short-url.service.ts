@@ -7,11 +7,13 @@ import { URL_REPOSITORY } from '../constants/injection-tokens';
 import { CreateUrlDto } from '../dto/create-url.dto';
 import { UrlResponseDto } from '../dto/url-response.dto';
 
+
 @Injectable()
 export class CreateShortUrlService {
   constructor(
     @Inject(URL_REPOSITORY)
     private readonly urlRepository: IUrlRepository,
+  
   ) {}
 
   async create(
@@ -19,6 +21,12 @@ export class CreateShortUrlService {
     userId: string,
   ): Promise<UrlResponseDto> {
     const shortCode = this.generateShortCode();
+
+  let user =  this.urlRepository.findByUserId(userId)
+
+  console.log(user);
+  
+
 
     const url = new Url(
       null,
