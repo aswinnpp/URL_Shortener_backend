@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 
-import { Otp } from '../entities/otp.entity';
+import { Otp } from '../schemas/otp.schema';
 import type { IOtpRepository } from '../interfaces/otp-repository.interface';
 
 import {

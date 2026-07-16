@@ -1,4 +1,4 @@
-import { Otp } from '../entities/otp.entity';
+import { Otp } from '../schemas/otp.schema';
 
 export interface IOtpRepository {
   create(otp: Otp): Promise<Otp>;

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 
-import { RefreshToken } from '../entities/refresh-token.entity';
+import { RefreshToken } from '../schemas/refresh-token.schema';
 import type { IRefreshTokenRepository } from '../interfaces/refresh-token-repository.interface';
 
 import {
