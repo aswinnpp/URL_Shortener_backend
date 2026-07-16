@@ -34,8 +34,9 @@ export class GetMyUrlsDto {
     'createdAt',
     'clicks',
     'originalUrl',
+    'name',
   ])
-  sortBy: 'createdAt' | 'clicks' | 'originalUrl' =
+  sortBy: 'createdAt' | 'clicks' | 'originalUrl' | 'name' =
     'createdAt';
 
   @IsOptional()

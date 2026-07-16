@@ -15,6 +15,7 @@ export class UrlRepository implements IUrlRepository {
 
   async create(url: Url): Promise<Url> {
     const created = await this.urlModel.create({
+      name: url.name,
       originalUrl: url.originalUrl,
       shortCode: url.shortCode,
       userId: url.userId,
@@ -49,6 +50,12 @@ export class UrlRepository implements IUrlRepository {
   
     if (search) {
       filter.$or = [
+        {
+          name: {
+            $regex: search,
+            $options: 'i',
+          },
+        },
         {
           originalUrl: {
             $regex: search,
@@ -113,17 +120,18 @@ export class UrlRepository implements IUrlRepository {
     const updatedUrl = await this.urlModel.findByIdAndUpdate(
       url.id,
       {
+        name: url.name,
         originalUrl: url.originalUrl,
       },
       {
         new: true,
       },
     );
-  
+
     if (!updatedUrl) {
       throw new Error('URL not found');
     }
-  
+
     return this.toDomain(updatedUrl);
   }
   
@@ -134,6 +142,7 @@ export class UrlRepository implements IUrlRepository {
   private toDomain(url: UrlDocument): Url {
     return new Url(
       url._id.toString(),
+      url.name ?? 'Untitled',
       url.originalUrl,
       url.shortCode,
       url.userId.toString(),

@@ -6,6 +6,7 @@ export type UrlDocument = HydratedDocument<UrlSchema>;
 export class Url {
   constructor(
     public readonly id: string | null,
+    public readonly name: string,
     public readonly originalUrl: string,
     public readonly shortCode: string,
     public readonly userId: string,
@@ -20,6 +21,9 @@ export class Url {
   collection: 'urls',
 })
 export class UrlSchema {
+  @Prop({ required: true, trim: true, minlength: 2, maxlength: 100 })
+  name!: string;
+
   @Prop({ required: true })
   originalUrl!: string;
 

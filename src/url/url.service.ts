@@ -27,11 +27,12 @@ export class UrlService {
   async create(dto: CreateUrlDto, userId: string): Promise<UrlResponseDto> {
     const shortCode = this.generateShortCode();
 
-    const url = new Url(null, dto.originalUrl, shortCode, userId, 0, new Date());
+    const url = new Url(null, dto.name, dto.originalUrl, shortCode, userId, 0, new Date());
     const savedUrl = await this.urlRepository.create(url);
 
     return {
       id: savedUrl.id!,
+      name: savedUrl.name,
       originalUrl: savedUrl.originalUrl,
       shortCode: savedUrl.shortCode,
       clicks: savedUrl.clicks,
@@ -59,6 +60,7 @@ export class UrlService {
     return {
       data: urls.map((url) => ({
         id: url.id!,
+        name: url.name,
         originalUrl: url.originalUrl,
         shortCode: url.shortCode,
         shortUrl: `${process.env.APP_URL}/api/url/${url.shortCode}`,
@@ -89,6 +91,7 @@ export class UrlService {
 
     return {
       id: url.id!,
+      name: url.name,
       originalUrl: url.originalUrl,
       shortCode: url.shortCode,
       shortUrl: `http://localhost:3000/api/url/${url.shortCode}`,
@@ -122,11 +125,11 @@ export class UrlService {
       throw new ForbiddenException('You are not allowed to update this URL.');
     }
 
-    if (url.originalUrl === dto.originalUrl) {
+    if (url.originalUrl === dto.originalUrl && url.name === dto.name) {
       throw new BadRequestException('No changes detected.');
     }
 
-    const updatedUrl = new Url(url.id, dto.originalUrl, url.shortCode, url.userId, url.clicks, url.createdAt, url.updatedAt);
+    const updatedUrl = new Url(url.id, dto.name, dto.originalUrl, url.shortCode, url.userId, url.clicks, url.createdAt, url.updatedAt);
 
     await this.urlRepository.update(updatedUrl);
   }
